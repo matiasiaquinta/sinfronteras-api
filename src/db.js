@@ -1,18 +1,12 @@
-import mongoose from "mongoose";
-import { MONGODB_URI } from "./config.js";
+const mongoose = require("mongoose");
 
-export const connectDB = async () => {
-    try {
-        // Conectar a MongoDB usando Mongoose
-        await mongoose.connect(MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log("MongoDB is connected on", MONGODB_URI);
-
-        await mongoose.connect(MONGODB_URI);
+mongoose
+    .connect(
+        "mongodb+srv://matias:E41XAmNjkgG4bjZR@sinfronteras-api.5lqm1.mongodb.net/sinfronteras-api"
+    )
+    .then(() => {
         console.log("MongoDB is connected");
-    } catch (error) {
-        console.error("Error connecting to MongoDB:", error.message);
-    }
-};
+    })
+    .catch((error) => {
+        console.error("Error connecting to MongoDB:", error);
+    });
