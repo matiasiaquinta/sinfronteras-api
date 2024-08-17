@@ -9,6 +9,9 @@ export const connectDB = async () => {
             useUnifiedTopology: true,
         });
         console.log("MongoDB is connected on", MONGODB_URI);
+
+        await mongoose.connect(MONGODB_URI);
+        console.log("MongoDB is connected");
     } catch (error) {
         console.error("Error connecting to MongoDB:", error.message);
     }
