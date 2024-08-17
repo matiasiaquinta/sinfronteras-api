@@ -6,7 +6,6 @@ export const connectDB = async () => {
         // Conectar a MongoDB usando Mongoose
         await mongoose.connect(MONGODB_URI);
         console.log("MongoDB is connected on", MONGODB_URI);
-        console.log("PORT ", PORT);
 
         await mongoose.connect(MONGODB_URI);
         console.log("MongoDB is connected");
