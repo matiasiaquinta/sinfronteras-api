@@ -10,13 +10,6 @@ import { FRONTEND_URL } from "./config.js";
 
 const app = express();
 
-//middlewares
-//app.use(
-//    cors({
-//        origin: "http://localhost:5173",
-//        credentials: true,
-//    })
-//);
 app.use(
     cors({
         credentials: true,
@@ -28,7 +21,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
-app.use("/api", alumnosRoutes);
-app.use("/api", planRoutes);
+app.use("/api/alumnos", alumnosRoutes);
+app.use("/api/planes", planRoutes);
 
 export default app;

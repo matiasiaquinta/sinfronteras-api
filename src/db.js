@@ -1,28 +1,15 @@
 import mongoose from "mongoose";
-import { MONGODB_URI, PORT } from "./config.js";
-//import Alumno from "./models/alumno.model.js";
+import { MONGODB_URI } from "./config.js";
 
 export const connectDB = async () => {
     try {
-        await mongoose.connect(MONGODB_URI);
+        // Conectar a MongoDB usando Mongoose
+        await mongoose.connect(MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
         console.log("MongoDB is connected");
-
-        console.log("Server running on port " + PORT);
-
-        //const alumnos = await Alumno.find();
-        //console.log("encontrados:", alumnos);
     } catch (error) {
-        console.error(error);
+        console.error("Error connecting to MongoDB:", error.message);
     }
 };
-
-//import mongoose from "mongoose";
-//
-//export const connectDB = async () => {
-//    try {
-//        await mongoose.connect("mongodb://localhost/sinfronteras-prueba");
-//        console.log(">>> DB is connected");
-//    } catch (error) {
-//        console.log(error);
-//    }
-//};
