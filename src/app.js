@@ -6,14 +6,22 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import alumnosRoutes from "./routes/alumnos.routes.js";
 import planRoutes from "./routes/plan.routes.js";
-import { FRONTEND_URL } from "./config.js";
+//import { FRONTEND_URL } from "./config.js";
 
 const app = express();
 
+//app.use(
+//    cors({
+//        origin: FRONTEND_URL,
+//        credentials: true,
+//    })
+//);
+
 app.use(
     cors({
+        origin: ["https://sinfronteras-api.vercel.app/"],
+        methods: ["POST", "GET"],
         credentials: true,
-        origin: FRONTEND_URL,
     })
 );
 
