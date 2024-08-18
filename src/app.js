@@ -10,7 +10,13 @@ import { FRONTEND_URL } from "./config.js";
 
 const app = express();
 
-// Middleware de CORS
+//app.use(
+//    cors({
+//        origin: FRONTEND_URL,
+//        credentials: true,
+//    })
+//);
+//
 app.use(
     cors({
         origin: FRONTEND_URL,
@@ -19,18 +25,16 @@ app.use(
     })
 );
 
+app.get("/", (req, res) => {
+    res.json("Hello");
+});
+
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
 
-// Rutas
 app.use("/api/auth", authRoutes);
 app.use("/api/alumnos", alumnosRoutes);
 app.use("/api/planes", planRoutes);
-
-// Ruta raíz para pruebas
-app.get("/", (req, res) => {
-    res.json("Hello");
-});
 
 export default app;
