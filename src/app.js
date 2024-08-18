@@ -16,6 +16,11 @@ app.use(
         origin: FRONTEND_URL,
     })
 );
+
+app.get("/", (req, res) => {
+    res.json("Hello");
+});
+
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
