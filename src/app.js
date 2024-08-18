@@ -16,7 +16,7 @@ const app = express();
 //        credentials: true,
 //    })
 //);
-//
+
 app.use(
     cors({
         origin: FRONTEND_URL,
