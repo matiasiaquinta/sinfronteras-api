@@ -4,10 +4,11 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config"; // Cargar variables de entorno. No se si hace falta ponerlo aca
 
+import { FRONTEND_URL } from "./config.js";
+
 import authRoutes from "./routes/auth.routes.js";
 import alumnosRoutes from "./routes/alumnos.routes.js";
 import planRoutes from "./routes/plan.routes.js";
-import { FRONTEND_URL } from "./config.js";
 
 const app = express();
 
@@ -18,9 +19,12 @@ app.use(
     })
 );
 
-app.get("/", (req, res) => {
-    res.json("Hello");
-});
+// Manejar preflight requests para CORS
+app.options("*", cors());
+
+//app.get("/", (req, res) => {
+//    res.json("Hello");
+//});
 
 app.use(express.json());
 app.use(morgan("dev"));
