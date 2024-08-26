@@ -12,14 +12,14 @@ import { createPlanSchema, editPlanSchema } from "../schemas/plan.schema.js";
 
 const router = Router();
 
-router.get("/planes", auth, getPlans);
+router.get("/", auth, getPlans);
 
-router.post("/planes", auth, validateSchema(createPlanSchema), createPlan);
+router.post("/", auth, validateSchema(createPlanSchema), createPlan);
 
-router.get("/planes/:id", auth, getPlan);
+router.get("/:id", auth, getPlan);
 
-router.put("/planes/:id", auth, validateSchema(editPlanSchema), updatePlan);
+router.put("/:id", auth, validateSchema(editPlanSchema), updatePlan);
 
-router.delete("/planes/:id", auth, deletePlan);
+router.delete("/:id", auth, deletePlan);
 
 export default router;

@@ -25,7 +25,16 @@ export const register = async (req, res) => {
         //guardo el usuario y creo el token
         const userSaved = await newUser.save();
         const token = await createAccessToken({ id: userSaved._id });
+
+        // Configura la cookie
+        //res.cookie("token", token, {
+        //    httpOnly: true,
+        //    secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
+        //    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Necesario para cookies en diferentes dominios
+        //});
+
         res.cookie("token", token);
+
         res.json({
             id: userSaved._id,
             username: userSaved.username,
@@ -57,7 +66,15 @@ export const login = async (req, res) => {
 
         const token = await createAccessToken({ id: userFound._id });
 
-        res.cookie("token", token);
+        // Configura la cookie
+        res.cookie("token", token, {
+            //httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Necesario para cookies en diferentes dominios
+        });
+
+        //res.cookie("token", token);
+
         res.json({
             id: userFound._id,
             username: userFound.username,
@@ -72,34 +89,38 @@ export const login = async (req, res) => {
 
 //verifica si el usuario existe
 export const verifyToken = async (req, res) => {
-    const { token } = req.cookies;
+    const { token } = req.cookies; // Lee el token de las cookies
 
     if (!token) {
         return res.status(401).json({ message: "Unauthorized" });
-    } else {
-        jwt.verify(token, TOKEN_SECRET, async (err, user) => {
-            if (err) {
-                return res.status(401).json({ message: "Unauthorized" });
-            }
+    }
 
-            const userFound = await User.findById(user.id);
-            if (!userFound) {
-                return res.status(401).json({ message: "Unauthorized" });
-            } else {
-                return res.json({
-                    id: userFound._id,
-                    username: userFound.username,
-                    email: userFound.email,
-                });
-            }
+    try {
+        // Verifica el token
+        const decoded = jwt.verify(token, TOKEN_SECRET);
+        const userFound = await User.findById(decoded.id);
+
+        if (!userFound) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        return res.json({
+            id: userFound._id,
+            username: userFound.username,
+            email: userFound.email,
         });
+    } catch (error) {
+        return res
+            .status(401)
+            .json({ message: "Unauthorized", error: error.message });
     }
 };
 
 export const logout = (req, res) => {
     res.cookie("token", "", {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         expires: new Date(0),
     });
     return res.sendStatus(200);

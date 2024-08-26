@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import "dotenv/config"; // Cargar variables de entorno. No se si hace falta ponerlo aca
 
 import authRoutes from "./routes/auth.routes.js";
 import alumnosRoutes from "./routes/alumnos.routes.js";
@@ -10,17 +11,9 @@ import { FRONTEND_URL } from "./config.js";
 
 const app = express();
 
-//app.use(
-//    cors({
-//        origin: FRONTEND_URL,
-//        credentials: true,
-//    })
-//);
-
 app.use(
     cors({
         origin: FRONTEND_URL,
-        methods: ["POST", "GET"],
         credentials: true,
     })
 );
