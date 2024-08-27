@@ -67,19 +67,22 @@ export const login = async (req, res) => {
         const token = await createAccessToken({ id: userFound._id });
 
         // Configura la cookie
-        //res.cookie("token", token, {
-        //    httpOnly: true,
-        //    secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
-        //    sameSite: "strict", // Necesario para cookies en diferentes dominios
-        //});
+        res.cookie("token", token, {
+            httpOnly: process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
+            sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax", // Necesario para cookies en diferentes dominios
+        });
 
         //res.cookie("token", token);
 
-        res.cookie("token", token, {
-            domain: DOMAIN,
-            secure: true,
-            sameSite: "none",
-        });
+        console.log("Generated token:", token); // Imprime el token en la consola
+
+        //res.cookie("token", token, {
+        //    domain: DOMAIN,
+        //    httpOnly: true,
+        //    secure: true,
+        //    sameSite: "strict",
+        //});
 
         res.json({
             id: userFound._id,
@@ -123,8 +126,12 @@ export const verifyToken = async (req, res) => {
 };
 
 export const logout = (req, res) => {
+    //DEPLOY PRODUCTION
     res.cookie("token", "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
         expires: new Date(0),
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
     });
     return res.sendStatus(200);
 };
