@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
-import { TOKEN_SECRET } from "../config.js";
+import { DOMAIN, TOKEN_SECRET } from "../config.js";
 import { createAccessToken } from "../libs/jwt.js";
 
 export const register = async (req, res) => {
@@ -73,7 +73,13 @@ export const login = async (req, res) => {
         //    sameSite: "strict", // Necesario para cookies en diferentes dominios
         //});
 
-        res.cookie("token", token);
+        //res.cookie("token", token);
+
+        res.cookie("token", token, {
+            domain: DOMAIN,
+            secure: true,
+            sameSite: "none",
+        });
 
         res.json({
             id: userFound._id,
