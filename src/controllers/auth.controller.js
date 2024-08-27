@@ -68,9 +68,9 @@ export const login = async (req, res) => {
 
         // Configura la cookie
         res.cookie("token", token, {
-            //httpOnly: true,
+            httpOnly: true,
             secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Necesario para cookies en diferentes dominios
+            sameSite: "strict", // Necesario para cookies en diferentes dominios
         });
 
         //res.cookie("token", token);
